@@ -3,7 +3,7 @@ const path=require('path');
 const socketIO=require('socket.io');
 const http=require('http');
 const indexPath=path.join(__dirname,'../public');
-
+const {generateMessage}=require('./message');
 
 const app=express();
 
@@ -14,41 +14,27 @@ app.use(express.static(indexPath));
 var io=socketIO(server);
 io.on('connection',(socket)=>{
     console.log("New user connected");
-    socket.on('disconnect',()=>{
-        console.log('disconneted from user');
-
- 
-
-    });
+    socket.emit('newMessage',generateMessage('Admin','Welcome to CHAT APP'));
+    socket.broadcast.emit('newMessage',generateMessage('Admin',"New user joined")); 
+   
     // socket.emit('newMessage',{
     //     from:"bnm@gmail.com",
     //     text:"you are this",
     //     cretatedate:123
     // });
-    socket.on('createMessage',(message)=>{
+    socket.on('createMessage',(message,callbackkk)=>{
         console.log('createMessage',message);
-        socket.emit('newMessage',{
-            from:"Admin",
-            text :"Welcome to the CHAT APP",
-            createdAt: new Date().getTime()
-        });
-        socket.broadcast.emit('newMessage',{
-            from:"Admin",
-            text :"New user joined",
-            createdAt: new Date().getTime()
-        });
-        // io.emit('newMessage',{
-        //     from:message.from,
-        //     text :message.text,
-        //     createdAt: new Date().getTime()
-        // });
-    // socket.broadcast.emit('newMessage',{
-    //     from:message.from,
-    //     text :message.text,
-    //     createdAt: new Date().getTime()
-    // });
+      
+       
+       io.emit('newMessage',generateMessage(message.from,message.text));
+   // socket.broadcast.emit('newMessage',generateMessage(message.from,message.text));
+    callbackkk("This is from server");
+    
     });
-});
+    socket.on('disconnect',()=>{
+        console.log('disconneted from user');
+   });
+   });
 
     
 

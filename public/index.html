@@ -1,13 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-</head>
+</head> 
 <body>
     <p>welcome to socket app</p>
-    <script src="/socket.io/socket.io.js">
-    </script>
-    <script src="/index.js">
-        
-    </script>
+    <ol id="messages"></ol>
+    <form id="message-form">
+        <input name='message' type="text" placeholder="Message" />
+         <button>SEND</button>
+     </form>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/index.js"></script>
+    
+  
 </body>
+
 </html>
