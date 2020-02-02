@@ -3,7 +3,7 @@ const path=require('path');
 const socketIO=require('socket.io');
 const http=require('http');
 const indexPath=path.join(__dirname,'../public');
-const {generateMessage}=require('./message');
+const {generateMessage,generateLocationMessage}=require('./message');
 
 const app=express();
 
@@ -28,9 +28,15 @@ io.on('connection',(socket)=>{
        
        io.emit('newMessage',generateMessage(message.from,message.text));
    // socket.broadcast.emit('newMessage',generateMessage(message.from,message.text));
-    callbackkk("This is from server");
+    callbackkk();
     
     });
+    socket.on('createLocationMessage',(coords)=>{
+        console.log(coords);
+        io.emit('newLocationMessage',generateLocationMessage('Ajay',coords.latitude,coords.longitude));
+
+    });
+
     socket.on('disconnect',()=>{
         console.log('disconneted from user');
    });
