@@ -8,9 +8,10 @@ socket.on('disconnect',()=>{
 });
 
 socket.on('newMessage',(message)=>{
+    var formatedTime=moment(message.createdAt).format('h:mm:a');
     console.log("message",message);
     var li=jQuery('<li></li>');
-    li.text(`${message.from}:${message.text}`);
+    li.text(`${message.from}  ${formatedTime}  ${message.text}`);
     jQuery('#messages').append(li);
 
 }); 
@@ -20,9 +21,10 @@ socket.on('newMessage',(message)=>{
 //           },(data)=>{console.log("Got it",data);});
 
 socket.on('newLocationMessage',(message)=>{
+    var formatedTime=moment(message.createdAt).format('h:mm:a');
 var li=jQuery('<li></li>');
   var a=jQuery('<a target="_blank">My current Location</a>');
-  li.text(`${message.from}:`);
+  li.text(`${message.from} ${formatedTime}:`);
   a.attr('href',message.url);
   li.append(a);
   jQuery('#messages').append(li);
@@ -46,12 +48,12 @@ var li=jQuery('<li></li>');
             if(!navigator.geolocation){
                 return alert("Geoloaction is not supported");
             }
-            jQuery('#send-location').attr('disabled','disabled').text('SEND LOCATION..');
+            jQuery('#send-location').attr('disabled','disabled').text('SENDING LOCATION..');
             navigator.geolocation.getCurrentPosition((position)=>{
                 jQuery('#send-location').removeAttr('disabled').text('SEND LOCATION');
                 socket.emit("createLocationMessage",{
-                    latitude:position.coords.latitude,
-                    longitude:position.coords.longitude
+                    longitude:position.coords.longitude,
+                    latitude:position.coords.latitude
                 });
             
         },()=>{

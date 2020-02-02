@@ -33,7 +33,7 @@ io.on('connection',(socket)=>{
     });
     socket.on('createLocationMessage',(coords)=>{
         console.log(coords);
-        io.emit('newLocationMessage',generateLocationMessage('Ajay',coords.latitude,coords.longitude));
+        io.emit('newLocationMessage',generateLocationMessage('Ajay',coords.longitude,coords.latitude));
 
     });
 
